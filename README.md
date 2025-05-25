@@ -6,10 +6,10 @@
 </p>
 
 ### <img src="https://github.com/TheDudeThatCode/TheDudeThatCode/blob/master/Assets/Developer.gif" width="45" /> About Us:
-<h1 align="center">🌟 MO-IT101-Group1 🌟</h1>
+<h1 align="center">🌟 Computer Programming 2 Team Daemon 🌟</h1>
 
 <p align="center">
- 🚀 Explore the Incredible Creations of MO-IT101 Group 1! 🎉 We are a group of enthusiastic beginners diving into the world of programming. Our goal is to learn, collaborate, and build awesome projects together!
+ 🚀 Explore the Incredible Creations of MO-IT103 Team Daemon! 🎉 We are a group of enthusiastic beginners diving into the world of programming. Our goal is to learn, collaborate, and build awesome projects together!
 </p>   
 
 ## 👋 Who Are We?
