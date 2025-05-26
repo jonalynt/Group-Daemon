@@ -77,7 +77,7 @@ git clone https://github.com/Kristov-Judilla/MO-IT101-Group1.git
 - View the payroll statement in the console and check `MotorPHPayslip.csv` for saved data.
 - **Note**: Ensure `MotorPHPayslip.csv` is not open in another application (e.g., Excel) while running the program, as this may cause a "file in use" error when saving the payroll data.
 
-4️⃣** Log in log credentials**
+4️⃣** Log in credentials**
 -User ID: 100011
 -Password: 1234
 ---
