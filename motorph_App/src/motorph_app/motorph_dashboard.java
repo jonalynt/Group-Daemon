@@ -123,6 +123,11 @@ public class motorph_dashboard extends javax.swing.JFrame {
         btngenpayslip.setMaximumSize(new java.awt.Dimension(180, 30));
         btngenpayslip.setMinimumSize(new java.awt.Dimension(180, 30));
         btngenpayslip.setPreferredSize(new java.awt.Dimension(180, 30));
+        btngenpayslip.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btngenpayslipActionPerformed(evt);
+            }
+        });
         LeftMenu.add(btngenpayslip);
         btngenpayslip.setBounds(6, 231, 188, 30);
 
@@ -130,6 +135,11 @@ public class motorph_dashboard extends javax.swing.JFrame {
         btnhelpdesk.setMaximumSize(new java.awt.Dimension(180, 30));
         btnhelpdesk.setMinimumSize(new java.awt.Dimension(180, 30));
         btnhelpdesk.setPreferredSize(new java.awt.Dimension(180, 30));
+        btnhelpdesk.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnhelpdeskActionPerformed(evt);
+            }
+        });
         LeftMenu.add(btnhelpdesk);
         btnhelpdesk.setBounds(6, 279, 188, 30);
 
@@ -238,7 +248,7 @@ public class motorph_dashboard extends javax.swing.JFrame {
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addComponent(jLabel10)
-                        .addGap(254, 254, 254)
+                        .addGap(207, 207, 207)
                         .addComponent(jLabel18))
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -258,7 +268,7 @@ public class motorph_dashboard extends javax.swing.JFrame {
                             .addComponent(jTextField11)
                             .addComponent(jTextField12)
                             .addComponent(jTextField13, javax.swing.GroupLayout.DEFAULT_SIZE, 200, Short.MAX_VALUE))
-                        .addGap(94, 94, 94)
+                        .addGap(50, 50, 50)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel24, javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(jLabel23, javax.swing.GroupLayout.Alignment.TRAILING)
@@ -486,12 +496,35 @@ public class motorph_dashboard extends javax.swing.JFrame {
 
     private void btnleaveappActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnleaveappActionPerformed
         // TODO add your handling code here:
+        motorph_leaveapplication LeaveApplication = new motorph_leaveapplication();
+        LeaveApplication.setLocationRelativeTo(null);
+        LeaveApplication.setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_btnleaveappActionPerformed
 
     private void btnempdashboardActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnempdashboardActionPerformed
         // TODO add your handling code here:
-        
+        motorph_dashboard MainDashboard = new motorph_dashboard();
+        MainDashboard.setLocationRelativeTo(null);
+        MainDashboard.setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_btnempdashboardActionPerformed
+
+    private void btngenpayslipActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btngenpayslipActionPerformed
+        // TODO add your handling code here:
+        motorph_generatepayslip GenPayslip = new motorph_generatepayslip();
+        GenPayslip.setLocationRelativeTo(null);
+        GenPayslip.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_btngenpayslipActionPerformed
+
+    private void btnhelpdeskActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnhelpdeskActionPerformed
+        // TODO add your handling code here:
+        motorph_helpdesk HelpDesk = new motorph_helpdesk();
+        HelpDesk.setLocationRelativeTo(null);
+        HelpDesk.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_btnhelpdeskActionPerformed
 
     /**
      * @param args the command line arguments

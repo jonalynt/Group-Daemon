@@ -19,7 +19,8 @@ public class Motorph_App {
        motorph_login LoginFrame = new motorph_login();
        LoginFrame.setLocationRelativeTo(null);
        LoginFrame.setVisible(true);
-        
+       
+       
     }
     
 }
