@@ -200,6 +200,31 @@ class EmployeeAdminDashboard extends JFrame {
     static JTextField fininfogrossrate = new JTextField();
     static JTextField fininfohourlyrate = new JTextField();
     
+    //employee information
+    String txtempNo;
+    String txtlastname;
+    String txtfirstname;
+    String txtstatus;
+    String txtposition;
+    String txtsupervisor;
+
+    //personal employee info
+    String txtbday;
+    String txtaddress;
+    String txtphone;
+    String txtsss;
+    String txtphilhealth;
+    String txttin;
+    String txtpagibig;
+                                                    
+    //financial info
+    String txtsalary;
+    String txtricesubsidy;
+    String txtallowance;
+    String txtclothing;
+    String txtgrossrate;
+    String txthourlyrate;
+    
     //buttons
     JButton updateBtn = new JButton("Update Employee");
     JButton deleteBtn = new JButton("Delete Employee");
@@ -355,7 +380,8 @@ class EmployeeAdminDashboard extends JFrame {
         buttons.add(btnclear);
         
         //actionlistener for buttons
-       // deleteBtn.addActionListener(e -> deleteSelectedRow());
+        updateBtn.addActionListener(e -> updateemployee());
+        deleteBtn.addActionListener(e -> deleteSelectedRow());
         btnclear.addActionListener(e -> {
             emplastname.setText("");
             empfirstname.setText("");
@@ -498,77 +524,415 @@ class EmployeeAdminDashboard extends JFrame {
    
     //add new employee
     private void addemployeeoncsv(){      
-        
+    
     //employee information
-    String txtempNo = empNo.getText().trim();
-    String txtlastname = emplastname.getText().trim();
-    String txtfirstname = empfirstname.getText().trim();
-    String txtstatus = empstatus.getText().trim();
-    String txtposition = empposition.getText().trim();
-    String txtsupervisor = empsupervisor.getText().trim();
+     txtempNo = empNo.getText().trim();
+     txtlastname = emplastname.getText().trim();
+     txtfirstname = empfirstname.getText().trim();
+     txtstatus = empstatus.getText().trim();
+     txtposition = empposition.getText().trim();
+     txtsupervisor = empsupervisor.getText().trim();
 
     //personal employee info
-    String txtbday = personalinfobday.getText().trim();
-    String txtaddress = personalinfoaddress.getText().trim();
-    String txtphone = personalinfophone.getText().trim();
-    String txtsss = personalinfosss.getText().trim();
-    String txtphilhealth = personalinfophilhealth.getText().trim();
-    String txttin = personalinfotin.getText().trim();
-    String txtpagibig = personalinfopagibig.getText().trim();
+     txtbday = personalinfobday.getText().trim();
+     txtaddress = personalinfoaddress.getText().trim();
+     txtphone = personalinfophone.getText().trim();
+     txtsss = personalinfosss.getText().trim();
+     txtphilhealth = personalinfophilhealth.getText().trim();
+     txttin = personalinfotin.getText().trim();
+     txtpagibig = personalinfopagibig.getText().trim();
                                                     
     //financial info
-    String txtsalary = fininfobasicsalary.getText().trim();
-    String txtricesubsidy = fininforicesubsidy.getText().trim();
-    String txtallowance = fininfophoneallowance.getText().trim();
-    String txtclothing = fininfoclothingallowance.getText().trim();
-    String txtgrossrate = fininfogrossrate.getText().trim();
-    String txthourlyrate = fininfohourlyrate.getText().trim();
-    
-     if (txtempNo.isEmpty() || txtlastname.isEmpty() || txtfirstname.isEmpty() || txtstatus.isEmpty() || txtposition.isEmpty()|| txtsupervisor.isEmpty() || txtbday.isEmpty() ||
-            txtaddress.isEmpty()||
-            txtphone.isEmpty()       || 
-            txtsss.isEmpty()       ||
-            txtphilhealth.isEmpty()  ||      
-            txttin.isEmpty()       || 
-            txtpagibig.isEmpty()  ||      
-            txtsalary.isEmpty()||
-            txtricesubsidy.isEmpty()  ||      
-            txtallowance.isEmpty()   ||     
-            txtclothing.isEmpty()   ||     
-            txtgrossrate.isEmpty()    ||    
-            txthourlyrate.isEmpty() 
+     txtsalary = fininfobasicsalary.getText().trim();
+     txtricesubsidy = fininforicesubsidy.getText().trim();
+     txtallowance = fininfophoneallowance.getText().trim();
+     txtclothing = fininfoclothingallowance.getText().trim();
+     txtgrossrate = fininfogrossrate.getText().trim();
+     txthourlyrate = fininfohourlyrate.getText().trim();
+        
+        
+     if (txtlastname.isEmpty() || txtfirstname.isEmpty() || txtstatus.isEmpty() || txtposition.isEmpty() || txtsupervisor.isEmpty() || txtbday.isEmpty() || txtaddress.isEmpty() || txtphone.isEmpty() || txtsss.isEmpty() ||
+         txtphilhealth.isEmpty() ||      
+         txttin.isEmpty() || 
+         txtpagibig.isEmpty() ||      
+         txtsalary.isEmpty() ||
+         txtricesubsidy.isEmpty() ||      
+         txtallowance.isEmpty() ||     
+         txtclothing.isEmpty() ||     
+         txtgrossrate.isEmpty() ||    
+         txthourlyrate.isEmpty() 
              )
         {
                 JOptionPane.showMessageDialog(this, "Please fill in all fields.", "Missing Info", JOptionPane.WARNING_MESSAGE);
                 return;
             }
+        /*
          for (int i = 0; i < model.getRowCount(); i++) {
                 if (model.getValueAt(i, 0).toString().equals(txtempNo)) {
                     JOptionPane.showMessageDialog(this, "Employee number already exists.", "Duplicate Entry", JOptionPane.WARNING_MESSAGE);
                     return;
                 }
-            }
-         model.addRow(new String[]{txtempNo, txtlastname, txtfirstname});
-         appendToCSV("src\\MotorPH_EmployeeData.csv", txtempNo, txtlastname, txtfirstname);
+            } */
+         model.addRow(new String[]{
+            txtempNo,
+            txtlastname,
+            txtfirstname,
+            txtbday,
+            txtaddress,
+            txtphone,
+            txtsss,
+            txtphilhealth,
+            txttin,
+            txtpagibig,
+            txtstatus,
+            txtposition,
+            txtsupervisor,
+            txtsalary,
+            txtricesubsidy,
+            txtallowance,
+            txtclothing,
+            txtgrossrate,
+            txthourlyrate
+         });
+         appendToCSV("src\\MotorPH_EmployeeData.csv",
+            txtempNo,
+            txtlastname,
+            txtfirstname,
+            txtbday,
+            txtaddress,
+            txtphone,
+            txtsss,
+            txtphilhealth,
+            txttin,
+            txtpagibig,
+            txtstatus,
+            txtposition,
+            txtsupervisor,
+            txtsalary,
+            txtricesubsidy,
+            txtallowance,
+            txtclothing,
+            txtgrossrate,
+            txthourlyrate
+         );
          JOptionPane.showMessageDialog(this, "New employee added.");
 
          empNo.setText("");
          emplastname.setText("");
          empfirstname.setText("");
-    
-         loadCSV("src\\MotorPH_EmployeeData.csv");
+         empstatus.setText("");
+         empposition.setText("");
+         empsupervisor.setText("");
+         personalinfobday.setText("");
+         personalinfoaddress.setText("");
+         personalinfophone.setText("");
+         personalinfosss.setText("");
+         personalinfophilhealth.setText("");
+         personalinfotin.setText("");
+         personalinfopagibig.setText("");
+         fininfobasicsalary.setText("");
+         fininforicesubsidy.setText("");
+         fininfophoneallowance.setText("");
+         fininfoclothingallowance.setText("");
+         fininfogrossrate.setText("");
+         fininfohourlyrate.setText("");
     }
     
     //add to csv
-    public void appendToCSV(String filePath, String empNo, String lastName, String firstName) {
+    public void appendToCSV(String filePath, 
+            String txtempNo,
+            String txtlastname,
+            String txtfirstname,
+            String txtbday,
+            String txtaddress,
+            String txtphone,
+            String txtsss,
+            String txtphilhealth,
+            String txttin,
+            String txtpagibig,
+            String txtstatus,
+            String txtposition,
+            String txtsupervisor,
+            String txtsalary,
+            String txtricesubsidy,
+            String txtallowance,
+            String txtclothing,
+            String txtgrossrate,
+            String txthourlyrate
+            ) {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath, true))) {
             writer.newLine();
-            writer.write(empNo + "," + lastName + "," + firstName);
+            writer.write(
+                    txtempNo + "," +
+                    txtlastname + "," +
+                    txtfirstname + "," +
+                    txtbday + "," +
+                    txtaddress + "," +
+                    txtphone + "," +
+                    txtsss + "," +
+                    txtphilhealth + "," +
+                    txttin + "," +
+                    txtpagibig + "," +
+                    txtstatus + "," +
+                    txtposition + "," +
+                    txtsupervisor + "," +
+                    txtsalary + "," +
+                    txtricesubsidy + "," +
+                    txtallowance + "," +
+                    txtclothing + "," +
+                    txtgrossrate + "," +
+                    txthourlyrate  
+                            );
         } catch (IOException e) {
             JOptionPane.showMessageDialog(this, "Failed to write to CSV.");
         }
     }
+   
+    //update employee
+    private void updateemployee(){
+    int selectedRow = table.getSelectedRow();
+    if (selectedRow == -1) {
+        JOptionPane.showMessageDialog(this, "Please select a row to update.", "No Selection", JOptionPane.WARNING_MESSAGE);
+        return;
+    }
+
+     //employee information
+     txtempNo = empNo.getText().trim();
+     txtlastname = emplastname.getText().trim();
+     txtfirstname = empfirstname.getText().trim();
+     txtstatus = empstatus.getText().trim();
+     txtposition = empposition.getText().trim();
+     txtsupervisor = empsupervisor.getText().trim();
+
+    //personal employee info
+     txtbday = personalinfobday.getText().trim();
+     txtaddress = personalinfoaddress.getText().trim();
+     txtphone = personalinfophone.getText().trim();
+     txtsss = personalinfosss.getText().trim();
+     txtphilhealth = personalinfophilhealth.getText().trim();
+     txttin = personalinfotin.getText().trim();
+     txtpagibig = personalinfopagibig.getText().trim();
+                                                    
+    //financial info
+     txtsalary = fininfobasicsalary.getText().trim();
+     txtricesubsidy = fininforicesubsidy.getText().trim();
+     txtallowance = fininfophoneallowance.getText().trim();
+     txtclothing = fininfoclothingallowance.getText().trim();
+     txtgrossrate = fininfogrossrate.getText().trim();
+     txthourlyrate = fininfohourlyrate.getText().trim();
+
+   if (txtlastname.isEmpty() || txtfirstname.isEmpty() || txtstatus.isEmpty() || txtposition.isEmpty() || txtsupervisor.isEmpty() || txtbday.isEmpty() || txtaddress.isEmpty() || txtphone.isEmpty() || txtsss.isEmpty() ||
+         txtphilhealth.isEmpty() ||      
+         txttin.isEmpty() || 
+         txtpagibig.isEmpty() ||      
+         txtsalary.isEmpty() ||
+         txtricesubsidy.isEmpty() ||      
+         txtallowance.isEmpty() ||     
+         txtclothing.isEmpty() ||     
+         txtgrossrate.isEmpty() ||    
+         txthourlyrate.isEmpty() 
+             )
+        {
+        JOptionPane.showMessageDialog(this, "Please fill in all fields when updating.", "Missing Data", JOptionPane.WARNING_MESSAGE);
+        return;
+    }
+
+   //update jtable
+    //employee details
+    model.setValueAt(txtlastname, selectedRow, 1);
+    model.setValueAt(txtfirstname, selectedRow, 2);       
+    model.setValueAt(txtstatus, selectedRow, 10);
+    model.setValueAt(txtposition,selectedRow, 11);        
+    model.setValueAt(txtsupervisor,selectedRow, 12);        
+                        
+    //personal info 
+    model.setValueAt(txtbday,selectedRow, 3);  
+    model.setValueAt(txtaddress,selectedRow, 4);
+    model.setValueAt(txtphone,selectedRow, 5);        
+    model.setValueAt(txtsss,selectedRow, 6);        
+    model.setValueAt(txtphilhealth,selectedRow, 7);        
+    model.setValueAt(txttin,selectedRow, 8);        
+    model.setValueAt(txtpagibig,selectedRow, 9);        
+                        
+                //financial info
+    model.setValueAt(txtsalary,selectedRow, 13);       
+    model.setValueAt(txtricesubsidy, selectedRow, 14);        
+    model.setValueAt(txtallowance,selectedRow, 15);        
+    model.setValueAt(txtclothing,selectedRow, 16);
+    model.setValueAt(txtgrossrate, selectedRow, 17); 
+    model.setValueAt(txthourlyrate, selectedRow, 18);
     
+
+    // Update CSV
+    updateCSV("src\\MotorPH_EmployeeData.csv",
+            txtempNo,
+            txtlastname,
+            txtfirstname,
+            txtbday,
+            txtaddress,
+            txtphone,
+            txtsss,
+            txtphilhealth,
+            txttin,
+            txtpagibig,
+            txtstatus,
+            txtposition,
+            txtsupervisor,
+            txtsalary,
+            txtricesubsidy,
+            txtallowance,
+            txtclothing,
+            txtgrossrate,
+            txthourlyrate
+         );
+
+    JOptionPane.showMessageDialog(this, "Row updated.");
+    }
+    
+    //updating csv
+    private void updateCSV(
+            String filePath, 
+            String txtempNo,
+            String txtlastname,
+            String txtfirstname,
+            String txtbday,
+            String txtaddress,
+            String txtphone,
+            String txtsss,
+            String txtphilhealth,
+            String txttin,
+            String txtpagibig,
+            String txtstatus,
+            String txtposition,
+            String txtsupervisor,
+            String txtsalary,
+            String txtricesubsidy,
+            String txtallowance,
+            String txtclothing,
+            String txtgrossrate,
+            String txthourlyrate
+            ){
+         File inputFile = new File(filePath);
+    File tempFile = new File("src\\temp.csv");
+
+    try (
+        BufferedReader reader = new BufferedReader(new FileReader(inputFile));
+        BufferedWriter writer = new BufferedWriter(new FileWriter(tempFile))
+    ) {
+        String line;
+        boolean isHeader = true;
+
+        while ((line = reader.readLine()) != null) {
+            if (isHeader) {
+                writer.write(line);
+                writer.newLine();
+                isHeader = false;
+                continue;
+            }
+
+            String[] data = line.split(",");
+            if (data.length > 0 && data[0].equals(txtempNo)) {
+                writer.write(
+                
+                    txtempNo + "," +
+                    txtlastname + "," +
+                    txtfirstname + "," +
+                    txtbday + "," +
+                    txtaddress + "," +
+                    txtphone + "," +
+                    txtsss + "," +
+                    txtphilhealth + "," +
+                    txttin + "," +
+                    txtpagibig + "," +
+                    txtstatus + "," +
+                    txtposition + "," +
+                    txtsupervisor + "," +
+                    txtsalary + "," +
+                    txtricesubsidy + "," +
+                    txtallowance + "," +
+                    txtclothing + "," +
+                    txtgrossrate + "," +
+                    txthourlyrate  
+                
+                );  // write updated
+            } else {
+                writer.write(line);  // write original
+            }
+            writer.newLine();
+        }
+
+    } catch (IOException e) {
+        JOptionPane.showMessageDialog(this, "Error updating CSV: " + e.getMessage());
+        return;
+    }
+
+    if (!inputFile.delete() || !tempFile.renameTo(inputFile)) {
+        JOptionPane.showMessageDialog(this, "Failed to update the CSV file.");
+    }
+        
+        
+    }
+    
+    //delete button action
+    private void deleteSelectedRow(){
+         
+    int selectedRow = table.getSelectedRow();
+    
+    if (selectedRow != -1) {
+        String empNoToDelete = model.getValueAt(selectedRow, 0).toString();
+        model.removeRow(selectedRow);
+        deleteFromCSV("src\\MotorPH_EmployeeData.csv", empNoToDelete);
+        
+        emplastname.setText("");
+        empfirstname.setText("");
+        empstatus.setText("");
+        empposition.setText("");
+        empsupervisor.setText("");
+        personalinfobday.setText("");
+        personalinfoaddress.setText("");
+        personalinfophone.setText("");
+        personalinfosss.setText("");
+        personalinfophilhealth.setText("");
+        personalinfotin.setText("");
+        personalinfopagibig.setText("");
+        fininfobasicsalary.setText("");
+        fininforicesubsidy.setText("");
+        fininfophoneallowance.setText("");
+        fininfoclothingallowance.setText("");
+        fininfogrossrate.setText("");
+        fininfohourlyrate.setText("");
+
+        JOptionPane.showMessageDialog(this, "Employee deleted.");
+    } else {
+        JOptionPane.showMessageDialog(this, "Please select a row to delete.", "No Selection", JOptionPane.WARNING_MESSAGE);
+    }
+    }  
+    
+    //delete from csv function
+    private void deleteFromCSV(String filePath, String empNoToDelete) {
+    File inputFile = new File(filePath);
+    File tempFile = new File("src\\temp.csv");
+
+    try (
+        BufferedReader reader = new BufferedReader(new FileReader(inputFile));
+        BufferedWriter writer = new BufferedWriter(new FileWriter(tempFile))
+    ) {
+        String currentLine;
+        while ((currentLine = reader.readLine()) != null) {
+            if (currentLine.startsWith(empNoToDelete + ",")) continue; // skip the row
+            writer.write(currentLine);
+            writer.newLine();
+        }
+    } catch (IOException e) {
+        JOptionPane.showMessageDialog(this, "Error while deleting: " + e.getMessage());
+        return;
+    }
+
+    if (!inputFile.delete() || !tempFile.renameTo(inputFile)) {
+        JOptionPane.showMessageDialog(this, "Could not update CSV file after deletion.");
+    }
+}
+
     //logout button
     private void logout(){
         dispose();
