@@ -8,6 +8,7 @@ import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
+
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -51,7 +52,6 @@ class MotorPHLogin extends JFrame {
         
         JLabel imagelabel = new JLabel(new ImageIcon("src\\images\\motorphimage.png"));
        
-        
         leftPanel.add(welcomeLabel, BorderLayout.NORTH);
         leftPanel.add(imagelabel);
 
@@ -100,9 +100,9 @@ class MotorPHLogin extends JFrame {
             if (authenticate(empNo,password)) {
                 JOptionPane.showMessageDialog(this, "Login successful!");
                 dispose(); // Close login window
-                new EmployeeAdminDashboard(); // Open table window
+                new EmployeeAdminDashboard(); // Open new jframe
             } else {
-                JOptionPane.showMessageDialog(this, "Invalid credentials!", "Login Failed", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(this, "Invalid credentials! Please check your Employee No. or Password", "Login Failed", JOptionPane.ERROR_MESSAGE);
             }
  
         });
@@ -241,29 +241,44 @@ class EmployeeAdminDashboard extends JFrame {
         // Left navigation panel
         JPanel navPanel = new JPanel();
         navPanel.setBackground(new Color(128, 0, 0));
-        navPanel.setPreferredSize(new Dimension(150, getHeight()));
+        navPanel.setPreferredSize(new Dimension(200, getHeight()));
         navPanel.setLayout(new BoxLayout(navPanel, BoxLayout.Y_AXIS));
 
         JLabel welcome = new JLabel("Welcome to MOTORPH");
-        JLabel admin = new JLabel("Admin Dashboard");
-        welcome.setHorizontalAlignment(SwingConstants.LEFT);
-        admin.setHorizontalAlignment(SwingConstants.LEFT);
+        welcome.setAlignmentX(Component.CENTER_ALIGNMENT);
         welcome.setForeground(Color.WHITE);
+        
+        JLabel admin = new JLabel("Admin Dashboard");
+        admin.setFont(new Font("Arial", Font.BOLD, 20));
+        admin.setAlignmentX(Component.CENTER_ALIGNMENT);
         admin.setForeground(Color.WHITE);
 
-        navPanel.add(welcome,BorderLayout.CENTER);
-        navPanel.add(admin,BorderLayout.CENTER);
-
         JButton btnDatabase = new JButton("Employee Database");
+        btnDatabase.setMaximumSize(new Dimension(180, 30));
+        btnDatabase.setAlignmentX(Component.CENTER_ALIGNMENT);
+        
         JButton btnAdd = new JButton("Add Employee");
+        btnAdd.setMaximumSize(new Dimension(180, 30));
+        btnAdd.setAlignmentX(Component.CENTER_ALIGNMENT);
+        JButton btnAttendance = new JButton("Attendance sheet");
+        btnAttendance.setMaximumSize(new Dimension(180, 30));
+        btnAttendance.setAlignmentX(Component.CENTER_ALIGNMENT);
         JButton btnLogout = new JButton("Log out");
-
-        for (JButton b : new JButton[]{btnDatabase, btnAdd, btnLogout}) {
-            b.setMaximumSize(new Dimension(180, 30));
-            b.setAlignmentX(Component.CENTER_ALIGNMENT);
-            navPanel.add(Box.createVerticalStrut(10));
-            navPanel.add(b);
-        }
+        btnLogout.setMaximumSize(new Dimension(180, 30));
+        btnLogout.setAlignmentX(Component.CENTER_ALIGNMENT);
+        
+        navPanel.add(Box.createVerticalStrut(20));
+        navPanel.add(welcome);
+        navPanel.add(Box.createVerticalStrut(5));
+        navPanel.add(admin);
+        navPanel.add(Box.createVerticalStrut(20));
+        navPanel.add(btnDatabase);
+        navPanel.add(Box.createVerticalStrut(10));
+        navPanel.add(btnAdd);
+        navPanel.add(Box.createVerticalStrut(10));
+        navPanel.add(btnAttendance);
+        navPanel.add(Box.createVerticalStrut(50));
+        navPanel.add(btnLogout);
 
         btnDatabase.addActionListener(e->employeedatabase());
         btnAdd.addActionListener(e -> addemployee());
@@ -272,8 +287,8 @@ class EmployeeAdminDashboard extends JFrame {
         add(navPanel, BorderLayout.WEST);
 
         // Main content
-        
         mainPanel.setLayout(new BorderLayout());
+        mainPanel.setPreferredSize(new Dimension(1000, getHeight()));
         addemployeepanel.setLayout(new BorderLayout());
 
         JLabel heading = new JLabel("Employee Database");
@@ -309,13 +324,11 @@ class EmployeeAdminDashboard extends JFrame {
         JPanel empInfo = new JPanel(new GridLayout(3, 2, 5, 5));
         JPanel personalInfo = new JPanel(new GridLayout(7, 2, 5, 5));
         JPanel financialInfo = new JPanel(new GridLayout(6, 2, 5, 5));
-        
-        String[] labels = columnNames;
-        int index = 0;
-
+       
         // Emlpoyee info panel  
         empInfo.setBorder(BorderFactory.createTitledBorder("Employee Information"));
         empInfo.add(new JLabel("EmployeeNo:"));
+        empNo.setEditable(false);
         empInfo.add(empNo);
         empInfo.add(new JLabel("LastName:"));    
         empInfo.add(emplastname);
@@ -365,18 +378,23 @@ class EmployeeAdminDashboard extends JFrame {
         formPanel.add(financialInfo);
 
         updateBtn.setBackground(new Color(0, 180, 0));
+        updateBtn.setMaximumSize(new Dimension(180, 30));
         updateBtn.setForeground(Color.WHITE);
-        deleteBtn.setForeground(Color.RED);
+        deleteBtn.setBackground(new Color(168, 0, 0)); 
+        deleteBtn.setMaximumSize(new Dimension(180, 30));
+        deleteBtn.setForeground(Color.WHITE);
         
-   
+        btnAddemployee.setMaximumSize(new Dimension(180, 30));
+        btnclear.setMaximumSize(new Dimension(180, 30));
+        
         buttons.setLayout(new BoxLayout(buttons, BoxLayout.Y_AXIS));
         buttons.add(Box.createVerticalStrut(20));
         buttons.add(updateBtn);
-        buttons.add(Box.createVerticalStrut(10));
+        buttons.add(Box.createVerticalStrut(20));
         buttons.add(deleteBtn);
-        buttons.add(Box.createVerticalStrut(10));
+        buttons.add(Box.createVerticalStrut(20));
         buttons.add(btnAddemployee);
-        buttons.add(Box.createVerticalStrut(10));
+        buttons.add(Box.createVerticalStrut(20));
         buttons.add(btnclear);
         
         //actionlistener for buttons
@@ -404,6 +422,7 @@ class EmployeeAdminDashboard extends JFrame {
         });
         
         btnAddemployee.setVisible(false);
+        btnclear.setVisible(false);
         
         bottomPanel.add(formPanel, BorderLayout.CENTER);
         bottomPanel.add(buttons, BorderLayout.EAST);
@@ -457,6 +476,7 @@ class EmployeeAdminDashboard extends JFrame {
          updateBtn.setVisible(true);
          deleteBtn.setVisible(true);
          btnAddemployee.setVisible(false);
+         btnclear.setVisible(false);
          empNo.setText("");
     }
     
@@ -466,6 +486,7 @@ class EmployeeAdminDashboard extends JFrame {
         addemployeepanel.add(bottomPanel);
         addemployeepanel.setVisible(true);
         btnAddemployee.setVisible(true);
+        btnclear.setVisible(true);
         updateBtn.setVisible(false);
         deleteBtn.setVisible(false);
         add(addemployeepanel);
@@ -935,6 +956,7 @@ class EmployeeAdminDashboard extends JFrame {
 
     //logout button
     private void logout(){
+        
         dispose();
         new MotorPHLogin();
 }
