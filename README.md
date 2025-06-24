@@ -72,7 +72,7 @@ Get started with Payroll Hub in just a few steps:
 
 4️⃣ **Log in credentials**
 
-- User ID: 100011
+- User ID: 10001
 - Password: 1234
 ---
 
