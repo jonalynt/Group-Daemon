@@ -231,7 +231,7 @@ public class AddEmployeePanel extends JPanel {
      txtgrossrate = fininfogrossrate.getText().trim();
      txthourlyrate = fininfohourlyrate.getText().trim();
         
-     /* if (txtlastname.isEmpty() || txtfirstname.isEmpty() || txtstatus.isEmpty() || txtposition.isEmpty() || txtsupervisor.isEmpty() || txtbday.isEmpty() || txtaddress.isEmpty() || txtphone.isEmpty() || txtsss.isEmpty() ||
+      if (txtlastname.isEmpty() || txtfirstname.isEmpty() || txtstatus.isEmpty() || txtposition.isEmpty() || txtsupervisor.isEmpty() || txtbday.isEmpty() || txtaddress.isEmpty() || txtphone.isEmpty() || txtsss.isEmpty() ||
          txtphilhealth.isEmpty() ||      
          txttin.isEmpty() || 
          txtpagibig.isEmpty() ||      
@@ -245,7 +245,7 @@ public class AddEmployeePanel extends JPanel {
         {
                 JOptionPane.showMessageDialog(this, "Please fill in all fields.", "Missing Info", JOptionPane.WARNING_MESSAGE);
                 return;
-            } */
+            } 
 
          appendToCSV("src\\MotorPH_EmployeeData.csv",
             txtempNo,

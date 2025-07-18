@@ -42,7 +42,7 @@ public class LoginPanel extends JFrame {
         loginLabel.setBounds(50, 30, 300, 25);
         rightPanel.add(loginLabel);
 
-        JLabel empLabel = new JLabel("Employee No. :");
+        JLabel empLabel = new JLabel("Username :");
         empLabel.setBounds(50, 80, 100, 25);
         rightPanel.add(empLabel);
 
@@ -93,7 +93,7 @@ public class LoginPanel extends JFrame {
         String inputUsername = empField.getText().trim();
         String inputPassword = new String(passField.getPassword()).trim();
         
-        File file = new File("src\\MotorPH_EmployeeData.csv");
+        File file = new File("src\\MotorPH_EmployeeLogin.csv");
         if (!file.exists()) {
             JOptionPane.showMessageDialog(this, "User credentials file not found.");
             return;
@@ -106,16 +106,17 @@ public class LoginPanel extends JFrame {
                 if (header) { header = false; continue; }
                 String[] parts = line.split(",", -1);
                 if (parts.length >= 3) {
-                    String username = parts[0].trim();
-                    String firstname = parts[2].trim();
-                    String password = parts[19].trim();
-                    String role = parts[11].trim();
+                    String employeenum = parts[0].trim();
+                    String username = parts[1].trim();
+                    String firstname = parts[3].trim();
+                    String password = parts[4].trim();
+                    String accesslevel = parts[5].trim();
 
-                    if (inputUsername.equals(username) && inputPassword.equals(password)) {
-                        JOptionPane.showMessageDialog(this, "Welcome, " + firstname + "!");
-                        new DashboardPanel(username, role, firstname);
-                        dispose();
-                        return;
+                    if (inputUsername.equalsIgnoreCase(username) && inputPassword.equals(password)) {
+                            JOptionPane.showMessageDialog(this, "Welcome, " + firstname + "!");
+                            new DashboardPanel(employeenum, accesslevel);
+                            dispose();
+                            return;
                     }
                 }
             }

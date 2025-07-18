@@ -28,8 +28,10 @@ public class DashboardPanel extends JFrame {
     
     String selectedEmpNo;
     
-    public DashboardPanel(String username, String role, String firstname) {
+    public DashboardPanel(String employeenum, String accesslevel) {
 
+        userRole = accesslevel;
+        userEmpNo = employeenum;
         setTitle("MotorPH Admin Dashboard");
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setSize(1200, 800);
@@ -75,12 +77,7 @@ public class DashboardPanel extends JFrame {
         cardLayout = new CardLayout();
         cardPanel = new JPanel(cardLayout);
         
-        if (role.equalsIgnoreCase("Chief Executive Officer") ||
-            role.equalsIgnoreCase("Chief Operating Officer")  ||  
-            role.equalsIgnoreCase("Chief Finance Officer")    ||
-            role.equalsIgnoreCase("Chief Marketing Officer")||
-            role.equalsIgnoreCase("IT Operations and Systems")  ||      
-            role.equalsIgnoreCase("HR Manager")      
+        if (userRole.equalsIgnoreCase("Admin")
         ){
             navPanel.add(Box.createVerticalStrut(20));
             navPanel.add(welcome);
@@ -113,8 +110,8 @@ public class DashboardPanel extends JFrame {
         });
             
         }
-        else {
-            fullEmpPanel.setEmployeeNo(username);
+        else{
+            fullEmpPanel.setEmployeeNo(employeenum);
             navPanel.add(Box.createVerticalStrut(20));
             navPanel.add(welcome);
             navPanel.add(Box.createVerticalStrut(20));
