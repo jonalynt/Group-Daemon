@@ -6,6 +6,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -36,7 +37,6 @@ public class FullDetailsPanel extends JPanel {
     private static final DateTimeFormatter TIME_FORMAT = DateTimeFormatter.ofPattern("H:mm");
     private static final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("MM/dd/yyyy");
     
-
     private String csvPath = "src\\MotorPH_AttendanceRecord.csv"; // Path to your attendance CSV
     
     JPanel bottomPanel = new JPanel(new BorderLayout());
@@ -250,9 +250,19 @@ public class FullDetailsPanel extends JPanel {
                     personalinfoaddress.setText(parts[4].trim());
                     personalinfophone.setText(parts[5].trim());
                     personalinfosss.setText(parts[6].trim());
-                    personalinfophilhealth.setText(parts[7].trim());
+                    
+                    //converting exponent philhealth
+                    String philhealthraw = parts[7].trim();
+                    BigDecimal philhealthnum = new BigDecimal(philhealthraw);
+                    String philhealth = philhealthnum.toPlainString();
+                    personalinfophilhealth.setText(philhealth);
                     personalinfotin.setText(parts[8].trim());
-                    personalinfopagibig.setText(parts[9].trim());
+                    
+                    String pagibigraw = parts[9].trim();
+                    BigDecimal pagibignum = new BigDecimal(pagibigraw);
+                    String pagibig = pagibignum.toPlainString();
+                    personalinfopagibig.setText(pagibig);
+                    
                     fininfobasicsalary.setText(parts[13].trim());
                     fininforicesubsidy.setText(parts[14].trim());
                     fininfophoneallowance.setText(parts[15].trim());

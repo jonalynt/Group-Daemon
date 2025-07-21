@@ -297,7 +297,6 @@ public class AddEmployeePanel extends JPanel {
             String txthourlyrate
             ) {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath, true))) {
-            writer.newLine();
             writer.write(
                     txtempNo + "," +
                     txtlastname + "," +

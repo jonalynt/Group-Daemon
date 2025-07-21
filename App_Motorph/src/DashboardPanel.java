@@ -11,27 +11,36 @@ public class DashboardPanel extends JFrame {
 
     String userRole;
     String userEmpNo;
+    String userLoggedIn;
+    String userFirstname;
+    String userLastname;
     
     employeeDashboard homePanel = new employeeDashboard();
     AddEmployeePanel addEmpPanel = new AddEmployeePanel();
     FullDetailsPanel fullEmpPanel = new FullDetailsPanel();
     LeavePanel leaveapp = new LeavePanel();
+    TimePanel timeEmpPanel = new TimePanel();
     
     //nav buttons
     JButton btnDatabase = new JButton("Employee Database");
     JButton btnAdd = new JButton("Add Employee");
     JButton btnLogout = new JButton("Log out");
     JButton btnfulldetails = new JButton("View Full Details");
+    JButton btnTime = new JButton("Time");
     
     JButton btnLeave = new JButton("Leave Application");
     JButton btnEmpHome = new JButton("Home");
     
     String selectedEmpNo;
     
-    public DashboardPanel(String employeenum, String accesslevel) {
+    public DashboardPanel(String employeenum, String accesslevel, String loginnum, String lastname, String firstname) {
 
         userRole = accesslevel;
         userEmpNo = employeenum;
+        userLoggedIn = loginnum;
+        userFirstname = firstname;
+        userLastname = lastname;
+        
         setTitle("MotorPH Admin Dashboard");
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setSize(1200, 800);
@@ -68,10 +77,12 @@ public class DashboardPanel extends JFrame {
         btnEmpHome.setMaximumSize(new Dimension(180, 30));
         btnEmpHome.setAlignmentX(Component.CENTER_ALIGNMENT);
         
+        btnTime.setMaximumSize(new Dimension(180, 30));
+        btnTime.setAlignmentX(Component.CENTER_ALIGNMENT);
+        
+        //for employees button
         btnLeave.setMaximumSize(new Dimension(180, 30));
         btnLeave.setAlignmentX(Component.CENTER_ALIGNMENT);
-        //for employees button
-        
         
         // Card Panel
         cardLayout = new CardLayout();
@@ -89,6 +100,8 @@ public class DashboardPanel extends JFrame {
             navPanel.add(btnfulldetails);
             navPanel.add(Box.createVerticalStrut(10));
             navPanel.add(btnAdd);
+            navPanel.add(Box.createVerticalStrut(10));
+            navPanel.add(btnTime);
             navPanel.add(Box.createVerticalStrut(50));
             navPanel.add(btnLogout);
             cardPanel.add(homePanel, "Home");
@@ -116,6 +129,8 @@ public class DashboardPanel extends JFrame {
             navPanel.add(welcome);
             navPanel.add(Box.createVerticalStrut(20));
             navPanel.add(btnEmpHome);
+            navPanel.add(Box.createVerticalStrut(20));
+            navPanel.add(btnTime);
             navPanel.add(Box.createVerticalStrut(20));
             navPanel.add(btnLeave);
             navPanel.add(Box.createVerticalStrut(50));
@@ -154,6 +169,15 @@ public class DashboardPanel extends JFrame {
             cardPanel.revalidate();
             cardPanel.repaint();
         }); 
+        
+        btnTime.addActionListener(e -> {
+            timeEmpPanel.setloggedin(userLoggedIn, userLastname, userFirstname);
+            cardPanel.removeAll();
+            cardPanel.add(timeEmpPanel);
+            cardPanel.revalidate();
+            cardPanel.repaint();
+        }); 
+        
         btnLogout.addActionListener(e -> {
             new LoginPanel();
             dispose();

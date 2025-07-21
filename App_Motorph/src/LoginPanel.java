@@ -107,14 +107,16 @@ public class LoginPanel extends JFrame {
                 String[] parts = line.split(",", -1);
                 if (parts.length >= 3) {
                     String employeenum = parts[0].trim();
+                    String loginnum = parts[0].trim();
                     String username = parts[1].trim();
+                    String lastname = parts[2].trim();
                     String firstname = parts[3].trim();
                     String password = parts[4].trim();
                     String accesslevel = parts[5].trim();
 
                     if (inputUsername.equalsIgnoreCase(username) && inputPassword.equals(password)) {
                             JOptionPane.showMessageDialog(this, "Welcome, " + firstname + "!");
-                            new DashboardPanel(employeenum, accesslevel);
+                            new DashboardPanel(employeenum, accesslevel, loginnum, lastname, firstname);
                             dispose();
                             return;
                     }
