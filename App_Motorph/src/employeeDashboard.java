@@ -4,6 +4,7 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.io.File;
+import java.math.BigDecimal;
 import java.util.Scanner;
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
@@ -177,6 +178,19 @@ public class employeeDashboard extends JPanel {
                 String line = scanner.nextLine(); // -1 to include empty
                 if (!line.trim().isEmpty()) {
                 String[] data = line.split(",", -1);
+                
+                // Convert exponential numbers to plain string
+                for (int i = 0; i < data.length; i++) {
+                    if (data[i].matches(".*[Ee].*")) {
+                        try {
+                            BigDecimal bd = new BigDecimal(data[i]);
+                            data[i] = bd.toPlainString();
+                        } catch (NumberFormatException ex) {
+                            // leave value unchanged if not a valid number
+                        }
+                    }
+                }
+                
                 model.addRow(data);
                 }
             }
@@ -184,6 +198,7 @@ public class employeeDashboard extends JPanel {
             JOptionPane.showMessageDialog(this, "Failed to load Employee CSV: " + e.getMessage());
         }
     }
+    
     public String getSelectedEmployeeNo() {
         int selectedemployee = table.getSelectedRow();
         if (selectedemployee != -1) {
