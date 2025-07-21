@@ -12,5 +12,5 @@ public class LeavePanel extends JPanel {
         leaveheading.setAlignmentX(Component.LEFT_ALIGNMENT);
         leaveheading.setBorder(BorderFactory.createEmptyBorder(20, 10, 10, 0));
         add(leaveheading, BorderLayout.NORTH);
-}
+    }
 }
