@@ -11,10 +11,8 @@ package motorph_application.ui;
 import javax.swing.*;
 import java.awt.*;
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.time.Duration;
@@ -22,26 +20,22 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.TextStyle;
-import java.util.LinkedHashSet;
 import java.util.Locale;
 import java.util.Scanner;
-import java.util.Set;
 import javax.swing.table.DefaultTableModel;
 import motorph_application.utils.CSVHandler;
 import motorph_application.utils.Constants;
-import static motorph_application.utils.Constants.ATTENDANCE_CSV;
-import static motorph_application.utils.Constants.EMPLOYEE_DATA_CSV;
 import motorph_application.utils.EmployeeData;
+import motorph_application.utils.PayrollCalculator;
+import motorph_application.utils.PayrollCalculator.PayrollResult;
 import motorph_application.utils.UIUtils;
 
 public class FullDetailsPanel extends JPanel {
-    
     private String employeeNum;
     private double hourlyRate;
     private double riceSubsidy;
     private double phoneAllowance;
     private double clothingAllowance;
-    private double benefits;
 
     private JTable attendanceTable;
     private DefaultTableModel attendanceModel;
@@ -72,7 +66,7 @@ public class FullDetailsPanel extends JPanel {
     private JPanel tablePanel = new JPanel();
     private JPanel centerContainer = new JPanel(new BorderLayout());
     private JPanel buttons = new JPanel(new GridLayout(4, 1, 20, 20));
-    
+
     public FullDetailsPanel() {
         setLayout(new BorderLayout());
         setPreferredSize(new Dimension(1200, getHeight()));
@@ -91,7 +85,7 @@ public class FullDetailsPanel extends JPanel {
         comboMonth.addItem("All");
         comboMonth.addActionListener(e -> reloadTable());
 
-        JPanel topPanel = new JPanel(new GridLayout(1, 1, 5, 5));
+        JPanel topPanel = new JPanel(new GridLayout(1, 3, 5, 5));
         topPanel.add(new JLabel("Filter by Month:"));
         topPanel.add(comboMonth);
         topPanel.add(totalSalary);
@@ -109,6 +103,7 @@ public class FullDetailsPanel extends JPanel {
         JButton updateBtn = UIUtils.createButton("Update Employee", new Color(0, 180, 0), Color.WHITE);
         JButton deleteBtn = UIUtils.createButton("Delete Employee", new Color(168, 0, 0), Color.WHITE);
 
+        btnCalculate.addActionListener(e -> calculateSalary());
         updateBtn.addActionListener(e -> updateEmployee());
         deleteBtn.addActionListener(e -> deleteSelectedRow());
 
@@ -123,15 +118,15 @@ public class FullDetailsPanel extends JPanel {
         add(bottomPanel, BorderLayout.SOUTH);
         add(centerContainer, BorderLayout.CENTER);
     }
-    
+
     public void setEmployeeNo(String employeeNo) {
-        this.employeeNum = employeeNo;    
+        this.employeeNum = employeeNo;
         searchEmployee();
         loadAvailableMonths();
         reloadTable();
     }
 
-    public void searchEmployee() {
+    private void searchEmployee() {
         try (BufferedReader reader = new BufferedReader(new FileReader(Constants.EMPLOYEE_DATA_CSV))) {
             String line;
             boolean skipHeader = true;
@@ -175,9 +170,7 @@ public class FullDetailsPanel extends JPanel {
             JOptionPane.showMessageDialog(this, "Error reading file: " + ex.getMessage());
         }
     }
-    
-    //for attendance table
-    
+
     private void loadAvailableMonths() {
         comboMonth.removeAllItems();
         comboMonth.addItem("All");
@@ -188,7 +181,7 @@ public class FullDetailsPanel extends JPanel {
 
     private void reloadTable() {
         attendanceModel.setRowCount(0);
-        double totalSalaryValue = 0.0;
+        double totalDailySalary = 0.0;
         DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern(Constants.DATE_FORMAT);
         DateTimeFormatter timeFormat = DateTimeFormatter.ofPattern(Constants.TIME_FORMAT);
         String selectedMonth = (String) comboMonth.getSelectedItem();
@@ -211,11 +204,10 @@ public class FullDetailsPanel extends JPanel {
                         if (!"All".equals(selectedMonth) && !monthYear.equals(selectedMonth)) continue;
 
                         LocalTime logIn = LocalTime.parse(parts[4].trim(), timeFormat);
-                        LocalTime logOut = LocalTime.parse(parts[5].trim(), timeFormat);
+                        LocalTime logOut = parts[5].trim().isEmpty() ? LocalTime.now() : LocalTime.parse(parts[5].trim(), timeFormat);
                         double hoursWorked = Duration.between(logIn, logOut).toMinutes() / 60.0;
                         double dailySalary = hoursWorked * hourlyRate;
-                        benefits = riceSubsidy + phoneAllowance + clothingAllowance;
-                        totalSalaryValue += dailySalary;
+                        totalDailySalary += dailySalary;
 
                         attendanceModel.addRow(new Object[]{
                             parts[3].trim(), parts[4].trim(), parts[5].trim(),
@@ -227,92 +219,90 @@ public class FullDetailsPanel extends JPanel {
                     }
                 }
             }
-            totalSalaryValue += benefits;
-            totalSalary.setText("Total Salary: ₱" + String.format("%.2f", totalSalaryValue));
+            totalSalary.setText("Total Salary: ₱" + String.format("%.2f", totalDailySalary));
         } catch (IOException e) {
             JOptionPane.showMessageDialog(this, "Error reading CSV: " + e.getMessage());
         }
     }
-    
-    //delete button action
-    private void deleteSelectedRow(){
-         
-    int confirm = JOptionPane.showConfirmDialog(null, "Are you sure you want to delete this?", "Confirm Delete", JOptionPane.YES_NO_OPTION);
 
+    private void calculateSalary() {
+        EmployeeData employee = new EmployeeData();
+        employee.empNo = empNo.getText().trim();
+        employee.basicSalary = basicSalary.getText().isEmpty() ? 0 : Double.parseDouble(basicSalary.getText().trim());
+        employee.riceSubsidy = riceSubsidyField.getText().isEmpty() ? 0 : Double.parseDouble(riceSubsidyField.getText().trim());
+        employee.phoneAllowance = phoneAllowanceField.getText().isEmpty() ? 0 : Double.parseDouble(phoneAllowanceField.getText().trim());
+        employee.clothingAllowance = clothingAllowanceField.getText().isEmpty() ? 0 : Double.parseDouble(clothingAllowanceField.getText().trim());
+        employee.grossRate = grossRate.getText().isEmpty() ? 0 : Double.parseDouble(grossRate.getText().trim());
+        employee.hourlyRate = hourlyRateField.getText().isEmpty() ? 0 : Double.parseDouble(hourlyRateField.getText().trim());
+
+        String selectedMonth = (String) comboMonth.getSelectedItem();
+        PayrollResult result = PayrollCalculator.calculatePayroll(employee, Constants.ATTENDANCE_CSV, selectedMonth);
+        
+        String salaryDetails = String.format(
+            "Payroll Summary for %s:\n" +
+            "Gross Salary: ₱%.2f\n" +
+            "SSS Deduction: ₱%.2f\n" +
+            "PhilHealth Deduction: ₱%.2f\n" +
+            "Pag-IBIG Deduction: ₱%.2f\n" +
+            "Withholding Tax: ₱%.2f\n" +
+            "Net Salary: ₱%.2f",
+            employeeNum, result.grossSalary, result.sssDeduction, result.philhealthDeduction,
+            result.pagibigDeduction, result.withholdingTax, result.netSalary
+        );
+
+        
+        
+        JOptionPane.showMessageDialog(this, salaryDetails, "Payroll Summary", JOptionPane.INFORMATION_MESSAGE);
+    }
+
+    private void updateEmployee() {
+        EmployeeData data = new EmployeeData();
+        data.empNo = empNo.getText().trim();
+        data.lastName = lastName.getText().trim();
+        data.firstName = firstName.getText().trim();
+        data.birthday = birthday.getText().trim();
+        data.address = address.getText().trim();
+        data.phone = phone.getText().trim();
+        data.sss = sss.getText().trim();
+        data.philhealth = philhealth.getText().trim();
+        data.tin = tin.getText().trim();
+        data.pagibig = pagibig.getText().trim();
+        data.status = status.getText().trim();
+        data.position = position.getText().trim();
+        data.supervisor = supervisor.getText().trim();
+        data.basicSalary = basicSalary.getText().isEmpty() ? 0 : Double.parseDouble(basicSalary.getText().trim());
+        data.riceSubsidy = riceSubsidyField.getText().isEmpty() ? 0 : Double.parseDouble(riceSubsidyField.getText().trim());
+        data.phoneAllowance = phoneAllowanceField.getText().isEmpty() ? 0 : Double.parseDouble(phoneAllowanceField.getText().trim());
+        data.clothingAllowance = clothingAllowanceField.getText().isEmpty() ? 0 : Double.parseDouble(clothingAllowanceField.getText().trim());
+        data.grossRate = grossRate.getText().isEmpty() ? 0 : Double.parseDouble(grossRate.getText().trim());
+        data.hourlyRate = hourlyRateField.getText().isEmpty() ? 0 : Double.parseDouble(hourlyRateField.getText().trim());
+
+        int confirm = JOptionPane.showConfirmDialog(null, "Confirm updated details?", "Confirm Update", JOptionPane.YES_NO_OPTION);
         if (confirm == JOptionPane.YES_OPTION) {
-        deleteFromCSV(EMPLOYEE_DATA_CSV, employeeNum);
-        JOptionPane.showMessageDialog(this, "Employee deleted.");
-        clearfields();
-        }
-        else{
-        JOptionPane.showMessageDialog(this, "Please select a row to delete.");
-        }
-    }
-    
-    //delete from csv function
-    private void deleteFromCSV(String filePath, String empNoToDelete) {
-    File inputFile = new File(filePath);
-    File tempFile = new File("src\\temp.csv");
-
-    try (
-        BufferedReader reader = new BufferedReader(new FileReader(inputFile));
-        BufferedWriter writer = new BufferedWriter(new FileWriter(tempFile))
-    ) {
-        String currentLine;
-        while ((currentLine = reader.readLine()) != null) {
-            if (currentLine.startsWith(empNoToDelete + ",")) continue; // skip the row
-            writer.write(currentLine);
-            writer.newLine();
-        }
-    } catch (IOException e) {
-        JOptionPane.showMessageDialog(this, "Error while deleting: " + e.getMessage());
-        return;
-    }
-
-    if (!inputFile.delete() || !tempFile.renameTo(inputFile)) {
-        JOptionPane.showMessageDialog(this, "Could not update CSV file after deletion.");
-    }
-}
-    
-        private void updateEmployee() {
-            EmployeeData data = new EmployeeData();
-            data.empNo = empNo.getText().trim();
-            data.lastName = lastName.getText().trim();
-            data.firstName = firstName.getText().trim();
-            data.birthday = birthday.getText().trim();
-            data.address = address.getText().trim();
-            data.phone = phone.getText().trim();
-            data.sss = sss.getText().trim();
-            data.philhealth = philhealth.getText().trim();
-            data.tin = tin.getText().trim();
-            data.pagibig = pagibig.getText().trim();
-            data.status = status.getText().trim();
-            data.position = position.getText().trim();
-            data.supervisor = supervisor.getText().trim();
-            data.basicSalary = basicSalary.getText().isEmpty() ? 0 : Double.parseDouble(basicSalary.getText().trim());
-            data.riceSubsidy = riceSubsidyField.getText().isEmpty() ? 0 : Double.parseDouble(riceSubsidyField.getText().trim());
-            data.phoneAllowance = phoneAllowanceField.getText().isEmpty() ? 0 : Double.parseDouble(phoneAllowanceField.getText().trim());
-            data.clothingAllowance = clothingAllowanceField.getText().isEmpty() ? 0 : Double.parseDouble(clothingAllowanceField.getText().trim());
-            data.grossRate = grossRate.getText().isEmpty() ? 0 : Double.parseDouble(grossRate.getText().trim());
-            data.hourlyRate = hourlyRateField.getText().isEmpty() ? 0 : Double.parseDouble(hourlyRateField.getText().trim());
-
-            int confirm = JOptionPane.showConfirmDialog(null, "Confirm updated details?", "Confirm Update", JOptionPane.YES_NO_OPTION);
-            if (confirm == JOptionPane.YES_OPTION) {
-                if (data.lastName.isEmpty() || data.firstName.isEmpty() || data.status.isEmpty() || data.position.isEmpty() ||
-                    data.supervisor.isEmpty() || data.birthday.isEmpty() || data.address.isEmpty() || data.phone.isEmpty() ||
-                    data.sss.isEmpty() || data.philhealth.isEmpty() || data.tin.isEmpty() || data.pagibig.isEmpty() ||
-                    basicSalary.getText().isEmpty() || riceSubsidyField.getText().isEmpty() || phoneAllowanceField.getText().isEmpty() ||
-                    clothingAllowanceField.getText().isEmpty() || grossRate.getText().isEmpty() || hourlyRateField.getText().isEmpty()) {
-                    JOptionPane.showMessageDialog(this, "Please fill in all fields when updating.", "Missing Data", JOptionPane.WARNING_MESSAGE);
-                    return;
-                }
-
-                CSVHandler.updateCSV(Constants.EMPLOYEE_DATA_CSV, data.empNo, data.toCSVArray());
-                JOptionPane.showMessageDialog(this, "Employee details updated.");
+            if (data.lastName.isEmpty() || data.firstName.isEmpty() || data.status.isEmpty() || data.position.isEmpty() ||
+                data.supervisor.isEmpty() || data.birthday.isEmpty() || data.address.isEmpty() || data.phone.isEmpty() ||
+                data.sss.isEmpty() || data.philhealth.isEmpty() || data.tin.isEmpty() || data.pagibig.isEmpty() ||
+                basicSalary.getText().isEmpty() || riceSubsidyField.getText().isEmpty() || phoneAllowanceField.getText().isEmpty() ||
+                clothingAllowanceField.getText().isEmpty() || grossRate.getText().isEmpty() || hourlyRateField.getText().isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Please fill in all fields when updating.", "Missing Data", JOptionPane.WARNING_MESSAGE);
+                return;
             }
+
+            CSVHandler.updateCSV(Constants.EMPLOYEE_DATA_CSV, data.empNo, data.toCSVArray());
+            JOptionPane.showMessageDialog(this, "Employee details updated.");
+        }
     }
-    
-    private void clearfields(){
+
+    private void deleteSelectedRow() {
+        int confirm = JOptionPane.showConfirmDialog(null, "Are you sure you want to delete this?", "Confirm Delete", JOptionPane.YES_NO_OPTION);
+        if (confirm == JOptionPane.YES_OPTION) {
+            CSVHandler.deleteFromCSV(Constants.EMPLOYEE_DATA_CSV, employeeNum);
+            JOptionPane.showMessageDialog(this, "Employee deleted.");
+            clearFields();
+        }
+    }
+
+    private void clearFields() {
         empNo.setText("");
         lastName.setText("");
         firstName.setText("");
@@ -333,5 +323,4 @@ public class FullDetailsPanel extends JPanel {
         grossRate.setText("");
         hourlyRateField.setText("");
     }
-    
 }

@@ -22,11 +22,11 @@ public class DashboardPanel extends JFrame {
     private String userLastname;
     private String selectedEmpNo;
 
-    private employeeDashboard homePanel = new employeeDashboard();
-    private AddEmployeePanel addEmpPanel = new AddEmployeePanel();
-    private FullDetailsPanel fullEmpPanel = new FullDetailsPanel();
-    private LeavePanel leaveApp = new LeavePanel();
-    private TimePanel timeEmpPanel = new TimePanel();
+    public employeeDashboard homePanel = new employeeDashboard();
+    public AddEmployeePanel addEmpPanel = new AddEmployeePanel();
+    public FullDetailsPanel fullEmpPanel = new FullDetailsPanel();
+    public LeavePanel leaveApp = new LeavePanel();
+    public TimePanel timeEmpPanel = new TimePanel();
 
     public DashboardPanel(String employeenum, String accesslevel, String loginnum, String lastname, String firstname) {
         userRole = accesslevel;

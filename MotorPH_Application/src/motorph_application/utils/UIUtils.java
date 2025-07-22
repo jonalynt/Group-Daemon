@@ -13,7 +13,6 @@ import java.awt.*;
  */
 public class UIUtils {
     
-
     public static JPanel createTitledPanel(String title, LayoutManager layout) {
         JPanel panel = new JPanel(layout);
         panel.setBorder(BorderFactory.createTitledBorder(title));
